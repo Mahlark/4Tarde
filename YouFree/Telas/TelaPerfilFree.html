@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Seus estilos existentes aqui... */
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+        }
+
+        .dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #FFDD00;
+            color: black;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            height: 100vh;
+        }
+
+        .sidebar img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            background-color: #ccc;
+        }
+
+        .sidebar h1 {
+            font-size: 24px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .sidebar a {
+            color: black;
+            padding: 10px;
+            text-decoration: none;
+            font-size: 18px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .sidebar a:hover {
+            background-color: #f4b400;
+            color: white;
+        }
+
+        .theme-toggle {
+            margin-top: auto;
+            margin-bottom: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+            width: calc(100% - 220px);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .welcome-message {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-image {
+            width: 180px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            align-self: flex-end;
+        }
+
+        .action-section,
+        .curriculum-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f7f7f7;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            align-items: flex-start;
+            text-align: center;
+        }
+
+        .reaction-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .reaction-buttons button {
+            background: #FFDD00;
+            border: none;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .reaction-buttons button:hover {
+            transform: scale(1.1);
+        }
+
+        .custom-file-btn {
+            background-color: #FFDD00;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .custom-file-btn:hover {
+            background-color: #f4b400;
+        }
+
+        .custom-file-btn:active {
+            background-color: #e2a800;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <img src="https://i.pinimg.com/236x/77/2a/a7/772aa709423494dba2e436c8df1fe643.jpg" alt="Foto do Perfil">
+        <h1>Luiza</h1>
+        <a href="#">Perfil</a>
+        <a href="#">Vagas</a>
+        <a href="#">Quem Somos?</a>
+        
+        <!-- Ícone de alternância de tema (Lua/Sol) -->
+        <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="content">
+        <div class="welcome-message">Bem-vinda, Luiza.</div>
+
+        <!-- Seção de Ações -->
+        <div class="action-section">
+            <p>Deseja alterar alguma informação de cadastro?</p>
+            <div class="reaction-buttons">
+                <button title="Sim" onclick="openModal()">👍</button>
+                <button title="Não">👎</button>
+            </div>
+        </div>
+
+        <!-- Seção do Currículo -->
+        <div class="curriculum-section">
+            <p>Currículo atual:</p>
+            <form id="uploadForm">
+                <label for="curriculumInput" class="custom-file-btn">
+                    <span>Escolher arquivo</span>
+                    <input type="file" id="curriculumInput" accept="image/*" onchange="displayCurriculumImage()">
+                </label>
+            </form>
+            <!-- Pré-visualização do Currículo -->
+            <img id="curriculumPreview" class="curriculum-preview" style="display: none;" alt="Pré-visualização do Currículo">
+        </div>
+
+        <!-- Imagem da pessoa -->
+        <img src="https://i.pinimg.com/236x/77/2a/a7/772aa709423494dba2e436c8df1fe643.jpg" alt="Imagem da Pessoa" class="profile-image">
+    </div>
+
+    <!-- Modal para edição de informações -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <h3>Altere aqui.</h3>
+            <form>
+                <label>Nome da empresa:</label>
+                <input type="text" class="form-control mb-2">
+                <label>Setor:</label>
+                <input type="text" class="form-control mb-2">
+                <label>Número de Telefone:</label>
+                <input type="text" class="form-control mb-2">
+                <label>CNPJ:</label>
+                <input type="text" class="form-control mb-2">
+                <label>Email:</label>
+                <input type="email" class="form-control mb-2">
+                <label>Senha:</label>
+                <input type="password" class="form-control mb-2">
+                <button type="submit" class="btn btn-warning mt-3">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+
+            // Alterna entre o modo claro e o modo escuro
+            body.classList.toggle('dark-mode');
+
+            // Alterna o ícone entre lua e sol
+            themeToggle.textContent = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        }
+
+        function openModal() {
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function displayCurriculumImage() {
+            const input = document.getElementById('curriculumInput');
+            const preview = document.getElementById('curriculumPreview');
+
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+
+</body>
+</html>
